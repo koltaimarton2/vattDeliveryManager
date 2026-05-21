@@ -1,0 +1,66 @@
+{
+  "couriers": [
+    {
+      "id": "c1",
+      "name": "Tamás Kovács",
+      "zone": "Belváros",
+      "vehicle": "bike",
+      "status": "idle",
+      "rating": 4.9,
+      "canSpeakHun": true
+    },
+    {
+      "id": "c2",
+      "name": "John Doe",
+      "zone": "North District",
+      "vehicle": "motorcycle",
+      "status": "idle",
+      "rating": 4.6,
+      "canSpeakHun": false,
+      "progress": 100
+    },
+    {
+      "id": "c3",
+      "name": "Zsófia Kiss",
+      "zone": "Belváros",
+      "vehicle": "car",
+      "status": "offline",
+      "rating": 4.7,
+      "canSpeakHun": true
+    }
+  ],
+  "packages": [
+    {
+      "id": "p1",
+      "customerName": "Nagy Gábor",
+      "customerZone": "Belváros",
+      "restaurant": "Pizza Forte",
+      "order": "1x Margherita, 1x Coca-Cola",
+      "fragile": false,
+      "status": "done",
+      "courierId": "c1",
+      "progress": 100
+    },
+    {
+      "id": "p2",
+      "customerName": "Sarah Smith",
+      "customerZone": "North District",
+      "restaurant": "Wok n Roll",
+      "order": "2x Pad Thai",
+      "fragile": false,
+      "status": "pending",
+      "courierId": "c2"
+    },
+    {
+      "id": "p3",
+      "customerName": "Horváth Anna",
+      "customerZone": "Belváros",
+      "restaurant": "Gundel",
+      "order": "1x Somlói Galuska (Premium)",
+      "fragile": true,
+      "status": "waiting",
+      "courierId": null
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
