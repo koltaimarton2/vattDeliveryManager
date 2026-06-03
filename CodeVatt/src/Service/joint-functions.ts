@@ -27,7 +27,7 @@ export function calculateDeliveryTime(courier: Courier, pack: Package): number {
 }
 
 
-export async function simulateDelivery(courierId: string, packageId: string) {
+export async function simulateDelivery(courierId: string, packageId: string, onUpdate?: () => void) {
     try {
 
         const courier : Courier  = await getCourier(courierId); 
@@ -39,6 +39,9 @@ export async function simulateDelivery(courierId: string, packageId: string) {
 
         await updateCourierStatus(courierId, 'pending')
         await updatePackageStatus(packageId, 'pending')
+
+        if (onUpdate) onUpdate();
+
         console.log(`Courier(${courierId}) has started delivering package(${packageId})`)
 
         let timePassed = 0;
@@ -55,12 +58,16 @@ export async function simulateDelivery(courierId: string, packageId: string) {
                 await updatePackageProgress(packageId, Math.round((timePassed / deliveryTime )* 100))
                 await updateCourierStatus(courierId, 'idle')
                 await updatePackageStatus(packageId, 'done')
+
+                if (onUpdate) onUpdate();
                 console.log(`Courier(${courierId}) has finished delivering package(${packageId})`)
                 
             }
             else {
                 await updateCourierProgress(courierId, currentProgress);
                 await updatePackageProgress(packageId, currentProgress);
+
+                if (onUpdate) onUpdate();
             }
         }, 1000);
     }

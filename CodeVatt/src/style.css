@@ -44,7 +44,7 @@ body{
     font-size: 3rem;
     font-weight: bold;
 }
-#app{
+#doneCards{
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -62,4 +62,17 @@ body{
 .card{
     background-color: #333333;
     color: white;
+}
+
+.bg-purple {
+    background-color: #800080;
+}
+
+.progress {
+    height: 20px;
+}
+
+.orders {
+    max-height: 800px;
+    
 }
