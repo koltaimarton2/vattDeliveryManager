@@ -11,9 +11,6 @@ let currentView: 'home' | 'packages' | 'couriers' = 'home';
 let isAutoAssign= false;
 let isAssigning = false;
 
-let allCouriers: Courier[] = [];
-let allPackages: Package[] = [];
-
 document.getElementById("nav-home")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'home';  render()});
 document.getElementById("nav-packages")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'packages'; render()  });
 document.getElementById("nav-couriers")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'couriers'; render() });
@@ -36,7 +33,7 @@ async function renderHome() {
 
 
     if (doneOrders.length === 0) {
-        html += `<p class="text-center text-muted w-100 mt-4">Még nincs sikeresen kézbesített rendelés.</p>`;
+        html += `<p class="text-center text-white  w-100 mt-4">Még nincs sikeresen kézbesített rendelés. <br><span class="fw-bold">Legyél te az első!</span></p>`;
     } else {
         doneOrders.forEach(pack => {
             html += `
@@ -111,38 +108,44 @@ async function renderPackages() {
                 </div>
             </div>
     `
-    waitingOrders.forEach(order => {
-        html += `
-        <div class="col mb-2">
-            <div class="card bg-dark text-white border-secondary h-100 shadow">
-                <div class="card-header border-secondary d-flex justify-content-between">
-                    <strong>${order.customerName}</strong>
-                    <span class="badge bg-purple" >${order.customerZone} zóna</span>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title text-warning">${order.restaurant}</h5>
-                    <p class="card-text text-light">${order.order}</p>
-                    <div class="input-group">
-                        <select id="select-courier-${order.id}" class="form-select bg-secondary text-white border-0">
-                            <option value="">Válassz szabad futárt!</option>
-                            ${idleCouriers.map(c => `<option value="${c.id}">${c.name} (${c.vehicle} - ${c.zone} zóna) ETA: ${calculateDeliveryTime(c, order)} perc</option>`).join('')}
-                        </select>
-                        <button class="btn bg-purple text-white btn-start-delivery" data-package-id="${order.id}">Kiosztás</button>
+    if (waitingOrders.length === 0) {
+        html += `<p class="text-white fw-bold">Jelenleg nincs felvett rendelés.</p>`;
+    }
+    else {
+        waitingOrders.forEach(order => {
+            html += `
+            <div class="col mb-2">
+                <div class="card bg-dark text-white border-secondary h-100 shadow">
+                    <div class="card-header border-secondary d-flex justify-content-between">
+                        <strong>${order.customerName}</strong>
+                        <span class="badge bg-purple" >${order.customerZone} zóna</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">${order.restaurant}</h5>
+                        <p class="card-text text-light">${order.order}</p>
+                        <div class="input-group">
+                            <select id="select-courier-${order.id}" class="form-select bg-secondary text-white border-0">
+                                <option value="">Válassz szabad futárt!</option>
+                                ${idleCouriers.map(c => `<option value="${c.id}">${c.name} (${c.vehicle} - ${c.zone} zóna) ETA: ${calculateDeliveryTime(c, order)} perc</option>`).join('')}
+                            </select>
+                            <button class="btn bg-purple text-white btn-start-delivery" data-package-id="${order.id}">Kiosztás</button>
+                        </div>
+                    </div>
+    
+    
+                    <div class="card-footer border-secondary text-end small">
+                        ${order.fragile ? "Érzékeny csomag" : "Normális csomag"}
                     </div>
                 </div>
-
-
-                <div class="card-footer border-secondary text-end small">
-                    ${order.fragile ? "Érzékeny csomag" : "Normális csomag"}
-                </div>
             </div>
-        </div>
-        `
-    })
+            `
+        })
+
+    }
     
     html += `
     </div>
-    <div class="col-md-6 card bg-dark text-white  border-secondary overflow-auto p-4 mb-5 shadow">
+    <div class="col-md-6 card bg-dark text-white  border-secondary orders overflow-auto p-4 mb-5 shadow">
             <h5 class="text-warning mb-3">Szállítás alatt</h5>
             <div id="pending-orders-container">
             </div> </div>
@@ -157,6 +160,8 @@ async function renderPackages() {
 }
 
 async function renderPendingOrders() :Promise<void> {
+    const couriers = await getCouriers()
+
     const container = document.getElementById("pending-orders-container")
     if (!container) return;
 
@@ -358,6 +363,7 @@ appElement.addEventListener("change", async(e)=> {
 
 
 async function executeDelivery(courierId: string, packageID: string) {
+
     await simulateDelivery(courierId, packageID, async () => {
         if (currentView === 'packages') {
             await renderPendingOrders();
@@ -424,7 +430,7 @@ async function renderCouriers() {
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title text-warning">${courier.zone}</h5>
                             <div class="form-check form-switch">
-                                <input class="form-check-input online-switch" data-id="${courier.id}" type="checkbox" ${courier.status != "offline" ? "checked" : ""} role="switch" >
+                                <input class="form-check-input online-switch" ${courier.status == "pending" ? "disabled" : ""} data-id="${courier.id}" type="checkbox" ${courier.status != "offline" ? "checked" : ""} role="switch" >
                             </div>
                         </div>
 
@@ -433,8 +439,8 @@ async function renderCouriers() {
                     </div>
                     <div class="card-footer border-secondary  small">
                         <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-sm bg-purple text-white edit-courier-btn" data-id="${courier.id}">Szerkesztés</button>
-                            <button class="btn btn-sm btn-danger delete-courier-btn" data-id="${courier.id}">Törlés</button>
+                            <button class="btn btn-sm bg-purple ${courier.status == "pending" ? "disabled" : ""} text-white edit-courier-btn" data-id="${courier.id}">Szerkesztés</button>
+                            <button class="btn btn-sm btn-danger ${courier.status == "pending" ? "disabled" : ""} delete-courier-btn" data-id="${courier.id}">Törlés</button>
                             <p class="card-text text-light text-end">Értékelés: ${courier.rating}</p>
                         </div>
                         
@@ -638,11 +644,7 @@ function render() {
     else if (currentView === 'couriers') renderCouriers();
 }
 
-renderCouriers()
-
-
-
-
+renderHome()
 
 
 
