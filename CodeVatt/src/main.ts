@@ -400,8 +400,160 @@ async function autoAssign() {
 }
 
 async function renderCouriers() {
+    const couriers = await getCouriers();
+    let cardsHtml = '';
+
+    couriers.forEach(courier => {
+
+        let vehicleName = 'Autó';
+        if (courier.vehicle === 'bike') vehicleName = 'Kerékpár';
+        if (courier.vehicle === 'motorcycle') vehicleName = 'Motorkerékpár';
+
+        let statusBadge = `<span class="badge bg-success">Elérhető</span>`;
+        if (courier.status === 'pending') statusBadge = `<span class="badge bg-warning text-dark">Kiszállítás alatt</span>`;
+        if (courier.status === 'offline') statusBadge = `<span class="badge bg-danger">Inaktív</span>`;
+
+        cardsHtml += `
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white border-secondary mb-2 shadow">
+                    <div class="card-header border-secondary d-flex justify-content-between">
+                        <strong>${courier.name}</strong>
+                        ${statusBadge}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">${courier.zone}</h5>
+                        <p class="card-text text-light">${vehicleName}t vezet</p>
+                        ${courier.canSpeakHun ? "Beszél magyarul" : "Nem beszél magyarul"}
+                    </div>
+                    <div class="card-footer border-secondary  small">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button class="btn btn-sm bg-purple text-white edit-courier-btn" data-id="${courier.id}">Szerkesztés</button>
+                            <button class="btn btn-sm btn-danger delete-courier-btn" data-id="${courier.id}">Törlés</button>
+                            <p class="card-text text-light text-end">Értékelés: ${courier.rating}</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    appElement.innerHTML = `
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-white partnereink  mb-0">Futárok Kezelése</h1>
+                <button class="btn btn-success px-4" id="addNewCourierBtn">Új futár</button>
+            </div>
+            <div class="row justify-content-center">
+                ${cardsHtml || '<p class="text-muted text-center mt-5">Nincs regisztrált futár a rendszerben.</p>'}
+            </div>
+        </div>
+    `;
+
     
+    document.getElementById('addNewCourierBtn')?.addEventListener('click', () => renderCourierForm());
+
+    
+    document.querySelectorAll('.edit-courier-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+
+            const id = (e.currentTarget as HTMLButtonElement).getAttribute('data-id');
+            const courier = couriers.find(c => c.id === id);
+            if (courier) {
+                renderCourierForm(courier);
+            }
+        });
+    });
+
+
+    document.querySelectorAll('.delete-courier-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const id = (e.currentTarget as HTMLButtonElement).getAttribute('data-id');
+            if (id && confirm('Biztosan törölni szeretnéd ezt a futárt?')) {
+                await deleteCourier(id);
+                renderCouriers();
+            }
+        });
+    });
+
 }
+
+function renderCourierForm(courier?: Courier) {
+    const isEdit = !!courier;
+    
+    appElement.innerHTML = `
+        <div class="container mt-4 text-white" style="max-width: 600px;">
+            <h2 class="mb-4 text-center">${isEdit ? 'Futár Adatainak Módosítása' : 'Új Futár Regisztrálása'}</h2>
+            <form id="courierForm" class="bg-dark p-4 rounded border border-secondary shadow">
+                <div class="mb-3">
+                    <label for="courierName" class="form-label">Futár Neve</label>
+                    <input type="text" class="form-control bg-secondary text-white border-0" id="courierName" value="${courier ? courier.name : ''}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="courierZone" class="form-label">Működési Zóna</label>
+                    <input type="text" class="form-control bg-secondary text-white border-0" id="courierZone" value="${courier ? courier.zone : ''}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="courierVehicle" class="form-label">Szállító Jármű</label>
+                    <select class="form-select bg-secondary text-white border-0" id="courierVehicle" required>
+                        <option value="bike" ${courier?.vehicle === 'bike' ? 'selected' : ''}>Kerékpár</option>
+                        <option value="motorcycle" ${courier?.vehicle === 'motorcycle' ? 'selected' : ''}>Motorkerékpár</option>
+                        <option value="car" ${courier?.vehicle === 'car' ? 'selected' : ''}>Autó</option>
+                    </select>
+                </div>
+                <div class="mb-4 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="courierSpeakHun" ${courier?.canSpeakHun ? 'checked' : ''}>
+                    <label class="form-check-label" for="courierSpeakHun">Beszél magyarul</label>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary px-4" id="cancelCourierForm">Mégse</button>
+                    <button type="submit" class="btn bg-purple text-white px-4">${isEdit ? 'Mentés' : 'Létrehozás'}</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    
+    document.getElementById('courierForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = (document.getElementById('courierName') as HTMLInputElement).value;
+        const zone = (document.getElementById('courierZone') as HTMLInputElement).value;
+        const vehicle = (document.getElementById('courierVehicle') as HTMLSelectElement).value as 'bike' | 'motorcycle' | 'car';
+        const canSpeakHun = (document.getElementById('courierSpeakHun') as HTMLInputElement).checked;
+
+        if (isEdit && courier) {
+        
+            const updatedCourier: Courier = {
+                ...courier,
+                name,
+                zone,
+                vehicle,
+                canSpeakHun
+            };
+            await editCourier(updatedCourier);
+        } else {
+            
+            const newCourier: Courier = {
+                id: 'c_' + Date.now(), 
+                name,
+                zone,
+                vehicle,
+                status: 'idle',
+                rating: 5.0,
+                canSpeakHun,
+                progress: 0
+            };
+            await createCourier(newCourier);
+        }
+        renderCouriers();
+    });
+
+    document.getElementById('cancelCourierForm')?.addEventListener('click', () => {
+        renderCouriers();
+    });
+}
+
 
 
 function render() {
