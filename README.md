@@ -8,15 +8,15 @@ Egy egyszerű, TypeScript-alapú webes alkalmazás, amely a győri ételkiszáll
 - **Folyamatkövetés:** Valós idejű szállítás-szimuláció progress bar animációval a folyamatban lévő rendeléseknél.
 - **Futárkezelés:** Új futárok regisztrációja, járműtípusok és nyelvismeret beállítása, valamint státuszváltás (online/offline).
 
-##A csapat
--**Zsigmond Attila László:**
-  -Homepage logikája (Kész rendelések megjelenítése)
-  -Frontend (weblap design)
--**Parádi Martin:**
-  -A futárok fül logikája
-  -Frontend (weblap design)
--**Koltai Márton Balázs:**
-  -A szállítások fül logikája
-  -Backend logika (interfacek, API funkciók)
-  -Frontend (weblap design)
+## A csapat
+- **Zsigmond Attila László:**
+  - Homepage logikája (Kész rendelések megjelenítése)
+  - Frontend (weblap design)
+- **Parádi Martin:**
+  - A futárok fül logikája
+  - Frontend (weblap design)
+- **Koltai Márton Balázs:**
+  - A szállítások fül logikája
+  - Backend logika (interfacek, API funkciók)
+  - Frontend (weblap design)
   
