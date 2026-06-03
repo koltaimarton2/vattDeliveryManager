@@ -1,0 +1,224 @@
+{
+  "couriers": [
+    {
+      "id": "c1",
+      "name": "Tamás Kovács",
+      "zone": "Belváros",
+      "vehicle": "bike",
+      "status": "idle",
+      "rating": 4.9,
+      "canSpeakHun": true,
+      "progress": 0
+    },
+    {
+      "id": "c2",
+      "name": "John Doe",
+      "zone": "North District",
+      "vehicle": "motorcycle",
+      "status": "idle",
+      "rating": 4.6,
+      "canSpeakHun": false,
+      "progress": 100
+    },
+    {
+      "id": "c3",
+      "name": "Zsófia Kiss",
+      "zone": "Belváros",
+      "vehicle": "car",
+      "status": "idle",
+      "rating": 4.7,
+      "canSpeakHun": true,
+      "progress": 100
+    }
+  ],
+  "packages": [
+    {
+      "id": "p1",
+      "customerName": "Nagy Gábor",
+      "customerZone": "Belváros",
+      "restaurant": "Pizza Forte",
+      "order": "1x Margherita, 1x Coca-Cola",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c1",
+      "progress": 90
+    },
+    {
+      "id": "p2",
+      "customerName": "Sarah Smith",
+      "customerZone": "North District",
+      "restaurant": "Wok n Roll",
+      "order": "2x Pad Thai",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c2",
+      "progress": 0
+    },
+    {
+      "id": "p3",
+      "customerName": "Horváth Anna",
+      "customerZone": "Belváros",
+      "restaurant": "Gundel",
+      "order": "1x Somlói Galuska (Premium)",
+      "fragile": true,
+      "status": "done",
+      "courierId": null,
+      "progress": 100
+    },
+    {
+      "id": "p4",
+      "customerName": "Kiss Bence",
+      "customerZone": "Belváros",
+      "restaurant": "McDonald's",
+      "order": "2x Big Mac Menü",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c1",
+      "progress": 0
+    },
+    {
+      "id": "p5",
+      "customerName": "Tóth Eszter",
+      "customerZone": "Kertváros",
+      "restaurant": "Burger King",
+      "order": "1x Whopper Menü",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c3",
+      "progress": 0
+    },
+    {
+      "id": "p6",
+      "customerName": "John Miller",
+      "customerZone": "West Side",
+      "restaurant": "KFC",
+      "order": "12 Hot Wings",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c2",
+      "progress": 0
+    },
+    {
+      "id": "p7",
+      "customerName": "Szabó Dóra",
+      "customerZone": "Belváros",
+      "restaurant": "Pizza Forte",
+      "order": "1x Sonkás Pizza",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c4",
+      "progress": 0
+    },
+    {
+      "id": "p8",
+      "customerName": "Németh Ádám",
+      "customerZone": "Északi Negyed",
+      "restaurant": "Wok n Roll",
+      "order": "1x Sushi Mix",
+      "fragile": true,
+      "status": "waiting",
+      "courierId": "c1",
+      "progress": 0
+    },
+    {
+      "id": "p9",
+      "customerName": "Emily Johnson",
+      "customerZone": "South District",
+      "restaurant": "Subway",
+      "order": "30cm Chicken Teriyaki",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c5",
+      "progress": 0
+    },
+    {
+      "id": "p10",
+      "customerName": "Varga Levente",
+      "customerZone": "Belváros",
+      "restaurant": "Gundel",
+      "order": "2x Somlói Galuska",
+      "fragile": true,
+      "status": "waiting",
+      "courierId": "c3",
+      "progress": 0
+    },
+    {
+      "id": "p11",
+      "customerName": "Horváth Máté",
+      "customerZone": "Keleti Lakópark",
+      "restaurant": "Pizza Forte",
+      "order": "1x Hawaii Pizza",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c2",
+      "progress": 0
+    },
+    {
+      "id": "p12",
+      "customerName": "Laura Brown",
+      "customerZone": "North District",
+      "restaurant": "Burger King",
+      "order": "2x Cheeseburger",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": "c4",
+      "progress": 0
+    },
+    {
+      "id": "p13",
+      "customerName": "Farkas Zsófia",
+      "customerZone": "Kertváros",
+      "restaurant": "KFC",
+      "order": "1x Zinger Menü",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": null,
+      "progress": 0
+    },
+    {
+      "id": "p14",
+      "customerName": "Molnár Dávid",
+      "customerZone": "Belváros",
+      "restaurant": "Wok n Roll",
+      "order": "1x Ramen",
+      "fragile": true,
+      "status": "waiting",
+      "courierId": null,
+      "progress": 0
+    },
+    {
+      "id": "5ZnopJU-V6I",
+      "customerName": "Koltai Márton",
+      "customerZone": "Kertváros",
+      "restaurant": "KFC",
+      "order": "Golden Grander Box",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": null,
+      "progress": 0
+    },
+    {
+      "id": "EVLyZYhi9w4",
+      "customerName": "Pető Zsombi",
+      "customerZone": "North District",
+      "restaurant": "Garázs Bisztró",
+      "order": "Bivaly burger",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": null,
+      "progress": 0
+    },
+    {
+      "id": "DZco2b_vQKA",
+      "customerName": "Zsigmond Attila",
+      "customerZone": "Gyárváros",
+      "restaurant": "KFC",
+      "order": "Keddi Kosár",
+      "fragile": true,
+      "status": "done",
+      "courierId": null,
+      "progress": 100
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

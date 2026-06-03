@@ -1,0 +1,78 @@
+.fejlec{
+    background-color: #800080;
+}
+.navbar-nav .nav-link, .navbar-brand{
+    color: white;
+}
+.navbar-nav .nav-link{
+    font-family: sans-serif;
+    font-size: 1.25rem;
+    font-family: cursive;
+}
+.navbar-brand{
+    font-size: 1.7rem;
+    font-family: cursive;
+    font-weight: bold;
+
+}
+.navbar-brand:hover{
+   color: white;
+}
+body{
+    background-color: #222222;
+}
+.logo{
+    max-height: 350px;
+}
+.nev{
+    color: white;
+    font-family: cursive;
+    font-size: 5rem;
+    font-weight: bold;
+}
+.szovegecske{
+    color: rgb(150, 150, 150);
+    font-family: sans-serif;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.2rem;
+    text-align: justify;
+}
+.partnereink{
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+}
+#doneCards{
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 17px;
+    padding-left: 17px;
+    background-color: #444444;
+    border-radius: 10px;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+.card{
+    background-color: #333333;
+    color: white;
+}
+
+.bg-purple {
+    background-color: #800080;
+}
+
+.progress {
+    height: 20px;
+}
+
+.orders {
+    max-height: 800px;
+    
+}
