@@ -75,3 +75,58 @@ export async function simulateDelivery(courierId: string, packageId: string, onU
         console.error(e)
     }
 }
+
+
+//export async function simulateDelivery(courierId: string, packageId: string, onProgress?: () => void) {
+//    try {
+//        const courier: Courier = await getCourier(courierId); 
+//        const pack: Package = await getPackage(packageId); 
+//        const deliveryTime = calculateDeliveryTime(courier, pack);
+//
+//        await updateCourierStatus(courierId, 'pending');
+//        await updatePackageStatus(packageId, 'pending');
+//        console.log(`Courier(${courierId}) has started delivering package(${packageId})`);
+//
+//        if (onProgress) await onProgress(); 
+//
+//        let timePassed = 0;
+//
+//        
+//        async function doTick() {
+//            timePassed++;
+//            const currentProgress = Math.round((timePassed / deliveryTime) * 100);
+//            console.log(`Courier(${courierId}) is delivering package(${packageId}) (${currentProgress}%)`);
+//
+//            if (timePassed >= deliveryTime) {
+//        
+//                await updateCourierProgress(courierId, 100);
+//                await updatePackageProgress(packageId, 100);
+//                await updateCourierStatus(courierId, 'idle');
+//                await updatePackageStatus(packageId, 'done');
+//                console.log(`Courier(${courierId}) has finished delivering package(${packageId})`);
+//                
+//                if (onProgress) await onProgress();
+//        
+//            } 
+//            else {
+//        
+//                await updateCourierProgress(courierId, currentProgress);
+//                await updatePackageProgress(packageId, currentProgress);
+//                
+//                if (onProgress) {        
+//                    await onProgress(); 
+//                }
+//
+//                setTimeout(doTick, 1000);
+//            }
+//        }
+//
+//        setTimeout(doTick, 1000);
+//
+//    }
+//    catch (e) {
+//        console.error("Hiba a szállítás szimulációjában:", e);
+//    }
+//}
+//
+//

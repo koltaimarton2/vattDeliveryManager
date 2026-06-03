@@ -8,6 +8,9 @@ import type { Package } from "./Interfaces/package";
 const appElement = document.getElementById("app")!;
 let currentView: 'home' | 'packages' | 'couriers' = 'home';
 
+let isAutoAssign= false;
+let isAssigning = false;
+
 let allCouriers: Courier[] = [];
 let allPackages: Package[] = [];
 
@@ -63,7 +66,6 @@ async function renderHome() {
 
 async function renderPackages() {
     const waitingOrders = await getStatusPackages('waiting');
-    const pendingOrders = await getStatusPackages('pending');
     const idleCouriers = await getStatusCouriers('idle');
 
     let html = `
@@ -99,10 +101,15 @@ async function renderPackages() {
     `;
 
     html +=  ` 
-    <div class="row ">
+    <div class="row">
         <div class="col-md-6 card bg-dark text-white border-secondary orders overflow-auto p-4 mb-5 shadow">
-            <h5 class="text-warning mb-3">Várakozó rendelések</h5>
-
+            <div class="d-flex justify-content-between">
+                <h5 class="text-warning mb-3">Várakozó rendelések</h5>
+                <div>
+                    <label for="autoAssign" class="form-label fw-bold text-white" >Autó-kiosztás</label>
+                    <input class="form-check-input" type="checkbox" id="autoAssign" ${isAutoAssign ? "checked" : ""} >
+                </div>
+            </div>
     `
     waitingOrders.forEach(order => {
         html += `
@@ -132,14 +139,31 @@ async function renderPackages() {
         </div>
         `
     })
+    
     html += `
     </div>
     <div class="col-md-6 card bg-dark text-white  border-secondary overflow-auto p-4 mb-5 shadow">
             <h5 class="text-warning mb-3">Szállítás alatt</h5>
+            <div id="pending-orders-container">
+            </div> </div>
+        </div>
     `
 
+    
+    appElement.innerHTML = html;
+
+    await renderPendingOrders();
+    
+}
+
+async function renderPendingOrders() :Promise<void> {
+    const container = document.getElementById("pending-orders-container")
+    if (!container) return;
+
+    const pendingOrders = await getStatusPackages('pending');
+    let html="";
     if (pendingOrders.length === 0) {
-        html += `<p class="text-muted">Jelenleg nincs aktív kiszállítás.</p>`;
+        html += `<p class="text-white fw-bold">Jelenleg nincs aktív kiszállítás.</p>`;
     } else {
         pendingOrders.forEach(pack => {
             html += `
@@ -162,12 +186,10 @@ async function renderPackages() {
             </div>
             `;
         });
-        html += `
-            </div>
-        </div>
-        `
+        
     }
-    appElement.innerHTML = html;
+    container.innerHTML = html;
+    
 }
 
 
@@ -244,9 +266,13 @@ appElement.addEventListener('submit', async (e) => {
         }
 
         try {
-            createPackage(newPackage);
+            await createPackage(newPackage);
             alert("Rendelés felvéve!")
-            renderPackages();
+            await renderPackages();
+
+            if (isAutoAssign) {
+                await autoAssign();
+            }   
         } 
         catch (error) {
             console.error(error)
@@ -308,13 +334,70 @@ appElement.addEventListener('click', async (e) => {
             courierSelect.style.border = "3px solid red";
             return;
         }
-        simulateDelivery(courierId, packageID, () => {
-            if (currentView === 'packages') {
-                renderPackages();
-         }
-        });
+        
+        setTimeout(async () => {
+            if (currentView === 'packages') await renderPackages();
+        }, 50);
+
+        await executeDelivery(courierId, packageID);
+        renderPackages();
     }
 });
+
+
+appElement.addEventListener("change", async(e)=> {
+    const target = e.target as HTMLInputElement
+    if (target.id == "autoAssign") {
+        isAutoAssign = target.checked
+        if (isAutoAssign) {
+            await autoAssign();
+        }
+    }
+})
+
+
+
+async function executeDelivery(courierId: string, packageID: string) {
+    await simulateDelivery(courierId, packageID, async () => {
+        if (currentView === 'packages') {
+            await renderPendingOrders();
+            const pendingOrders = await getStatusPackages('pending');
+            const isStillPending = pendingOrders.some(p => p.id === packageID);
+            if (!isStillPending) {
+                await renderPackages();
+
+
+                if (isAutoAssign) {
+                    await autoAssign();
+                }
+            }
+        }
+    });
+
+    await renderPackages();
+}
+
+async function autoAssign() {
+    if (!isAutoAssign || currentView !== "packages" || isAssigning) return;
+    isAssigning = true;
+    try {
+        let waitingPacks = await getStatusPackages('waiting');
+        let idleCouriers = await getStatusCouriers('idle');
+
+        while (waitingPacks.length > 0 && idleCouriers.length > 0) {
+            const pack = waitingPacks[0];
+            const courier = idleCouriers[0];
+
+            waitingPacks.shift();
+            idleCouriers.shift();
+
+            await executeDelivery(courier.id, pack.id);
+        }
+        await renderPackages();
+    } finally {
+        isAssigning = false;
+    }
+}
 
 async function renderCouriers() {
     
