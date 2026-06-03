@@ -8,7 +8,7 @@
       "status": "idle",
       "rating": 4.9,
       "canSpeakHun": true,
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "c2",
@@ -39,9 +39,9 @@
       "restaurant": "Pizza Forte",
       "order": "1x Margherita, 1x Coca-Cola",
       "fragile": false,
-      "status": "done",
+      "status": "waiting",
       "courierId": "c1",
-      "progress": 100
+      "progress": 90
     },
     {
       "id": "p2",
@@ -50,9 +50,9 @@
       "restaurant": "Wok n Roll",
       "order": "2x Pad Thai",
       "fragile": false,
-      "status": "done",
+      "status": "waiting",
       "courierId": "c2",
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "p3",
@@ -72,9 +72,9 @@
       "restaurant": "McDonald's",
       "order": "2x Big Mac Menü",
       "fragile": false,
-      "status": "done",
+      "status": "waiting",
       "courierId": "c1",
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "p5",
@@ -83,9 +83,9 @@
       "restaurant": "Burger King",
       "order": "1x Whopper Menü",
       "fragile": false,
-      "status": "done",
+      "status": "waiting",
       "courierId": "c3",
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "p6",
@@ -94,9 +94,9 @@
       "restaurant": "KFC",
       "order": "12 Hot Wings",
       "fragile": false,
-      "status": "done",
+      "status": "waiting",
       "courierId": "c2",
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "p7",
@@ -116,9 +116,9 @@
       "restaurant": "Wok n Roll",
       "order": "1x Sushi Mix",
       "fragile": true,
-      "status": "done",
+      "status": "waiting",
       "courierId": "c1",
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "p9",
@@ -171,9 +171,9 @@
       "restaurant": "KFC",
       "order": "1x Zinger Menü",
       "fragile": false,
-      "status": "done",
+      "status": "waiting",
       "courierId": null,
-      "progress": 100
+      "progress": 0
     },
     {
       "id": "p14",
@@ -193,6 +193,28 @@
       "restaurant": "KFC",
       "order": "Golden Grander Box",
       "fragile": false,
+      "status": "waiting",
+      "courierId": null,
+      "progress": 0
+    },
+    {
+      "id": "EVLyZYhi9w4",
+      "customerName": "Pető Zsombi",
+      "customerZone": "North District",
+      "restaurant": "Garázs Bisztró",
+      "order": "Bivaly burger",
+      "fragile": false,
+      "status": "waiting",
+      "courierId": null,
+      "progress": 0
+    },
+    {
+      "id": "DZco2b_vQKA",
+      "customerName": "Zsigmond Attila",
+      "customerZone": "Gyárváros",
+      "restaurant": "KFC",
+      "order": "Keddi Kosár",
+      "fragile": true,
       "status": "done",
       "courierId": null,
       "progress": 100
