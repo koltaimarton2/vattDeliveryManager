@@ -11,11 +11,18 @@ let currentView: 'home' | 'packages' | 'couriers' = 'home';
 let isAutoAssign= false;
 let isAssigning = false;
 
-document.getElementById("nav-home")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'home';  render()});
-document.getElementById("nav-packages")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'packages'; render()  });
-document.getElementById("nav-couriers")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'couriers'; render() });
-document.getElementById("brand-logo")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'home'; render() });
+//ocument.getElementById("nav-home")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'home';  render()});
+//ocument.getElementById("nav-packages")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'packages'; render()  });
+//ocument.getElementById("nav-couriers")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'couriers'; render() });
+//ocument.getElementById("brand-logo")?.addEventListener("click", (e) => { e.preventDefault(); currentView = 'home'; render() });
 
+window.addEventListener("hashchange", () => {
+    const hash = window.location.hash;
+    if (hash === "#packages") currentView = 'packages';
+    else if (hash === "#couriers") currentView = 'couriers';
+    else currentView = 'home';
+    render();
+});
 
 async function renderHome() {
     const doneOrders = await getStatusPackages('done');

@@ -38,7 +38,7 @@
       "status": "idle",
       "rating": 4.7,
       "canSpeakHun": true,
-      "progress": 0
+      "progress": 100
     },
     {
       "id": "c5",
@@ -102,9 +102,9 @@
       "restaurant": "Pizza Forte",
       "order": "1x Songoku pizza (32cm)",
       "fragile": false,
-      "status": "waiting",
+      "status": "done",
       "courierId": null,
-      "progress": 0
+      "progress": 100
     },
     {
       "id": "p5",
@@ -124,9 +124,9 @@
       "restaurant": "Burger King",
       "order": "1x Long Chicken Menü",
       "fragile": false,
-      "status": "waiting",
+      "status": "done",
       "courierId": null,
-      "progress": 0
+      "progress": 100
     },
     {
       "id": "p7",
@@ -245,9 +245,9 @@
       "restaurant": "KFC",
       "order": "10x Hot Wings Kosár",
       "fragile": true,
-      "status": "waiting",
+      "status": "done",
       "courierId": null,
-      "progress": 0
+      "progress": 100
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
